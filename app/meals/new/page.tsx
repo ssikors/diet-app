@@ -1,22 +1,42 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-interface MealForm {
-  title: string;
-  description: string;
-}
+const schema = z.object({
+  title: z.string(),
+  description: z.string().min(8),
+});
+
+type MealForm = z.infer<typeof schema>;
 
 export default function NewMealPage() {
-  // handleSubmit validates in the background
-  const { register, handleSubmit } = useForm<MealForm>();
+  const router = useRouter()
 
-  const onSubmit: SubmitHandler<MealForm> = (data) => {
-    console.log(data);
+  // handleSubmit validates in the background
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<MealForm>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit: SubmitHandler<MealForm> = async (data) => {
+    try {
+      await axios.post("/api/meals", data)
+      router.push("/meals")
+    } catch {
+      setError("root", { message: "Server error" });
+    }
   };
 
   return (
-    <div>
+    <div className="">
       <form
         className="flex flex-col gap-2 items-center"
         onSubmit={handleSubmit(onSubmit)}
@@ -24,14 +44,26 @@ export default function NewMealPage() {
         <input
           className="border-2"
           placeholder="Title"
-          {...register("title", { required: true })}
+          type="text"
+          {...register("title")}
         ></input>
-        <input
+        {errors.title && (
+          <div className="text-red-500">{errors.title.message}</div>
+        )}
+        <textarea
           className="border-2"
           placeholder="Description"
-          {...register("description", { required: true })}
-        ></input>
-        <button type="submit">submit</button>
+          {...register("description")}
+        ></textarea>
+        {errors.description && (
+          <div className="text-red-500">{errors.description.message}</div>
+        )}
+        <button disabled={isSubmitting} type="submit">
+          {isSubmitting ? "Loading..." : "Submit"}
+        </button>
+        {errors.root && (
+          <div className="text-red-500">{errors.root.message}</div>
+        )}
       </form>
     </div>
   );
