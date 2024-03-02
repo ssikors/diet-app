@@ -19,3 +19,8 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json(newMeal, { status: 201 });
 }
+
+export async function GET() {
+  const meals = await prisma.meal.findMany()
+  return NextResponse.json(meals)
+}
