@@ -13,9 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String
+  meals Meal[]
+}
+
 model Meal {
   id          Int      @id @default(autoincrement())
   title       String   @db.VarChar(127)
   description String   @db.Text
+  recipe      String?   @db.VarChar(1200)
+  tags        Tag[]
   updatedAt   DateTime @updatedAt
 }
