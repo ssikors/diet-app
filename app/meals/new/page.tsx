@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 const schema = z.object({
   title: z.string(),
   description: z.string().min(8),
+  recipe: z.string().min(16)
 });
 
 type MealForm = z.infer<typeof schema>;
@@ -57,6 +58,14 @@ export default function NewMealPage() {
         ></textarea>
         {errors.description && (
           <div className="text-red-500">{errors.description.message}</div>
+        )}
+        <textarea
+          className="border-2"
+          placeholder="Recipe"
+          {...register("recipe")}
+        ></textarea>
+        {errors.recipe && (
+          <div className="text-red-500">{errors.recipe.message}</div>
         )}
         <button disabled={isSubmitting} type="submit">
           {isSubmitting ? "Loading..." : "Submit"}

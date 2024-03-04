@@ -3,13 +3,8 @@
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-type Meal = {
-  id: number;
-  title: string;
-  description: string;
-  updatedAt: string;
-};
+import { MealItem } from "../components/meals/MealItem";
+import { Meal } from "@prisma/client";
 
 export default function Home() {
   const [meals, setMeals] = useState<Meal[]>([]);
@@ -25,18 +20,15 @@ export default function Home() {
   }, []);
 
   return (
-    <>
-      <button>
-        <div className="grid grid-cols-3 gap-4">
-          {meals.map((item) => (
-            <div className="flex flex-col">
-              <div>{item.title}</div>
-              <div>{item.description}</div>
-            </div>
-          ))}
-        </div>
+    <div className="text-center">
+      <div className="grid md:grid-cols-3 gap-6">
+        {meals.map((item) => (
+          <MealItem meal={item} />
+        ))}
+      </div>
+      <button className="m-8">
         <Link href={"/meals/new"}>New meal</Link>
       </button>
-    </>
+    </div>
   );
 }
