@@ -33,7 +33,19 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(newMeal, { status: 201 });
 }
 
-export async function GET() {
-  const meals = await prisma.meal.findMany({include: {tags: true}});
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const id = Number(searchParams.get("id"));
+
+  if (id) {
+
+    const meal = await prisma.meal.findFirst({
+      where: { id: id },
+      include: { tags: true },
+    });
+    return NextResponse.json(meal);
+  }
+
+  const meals = await prisma.meal.findMany({ include: { tags: true } });
   return NextResponse.json(meals);
 }
