@@ -20,8 +20,8 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="text-center">
-      <div className="grid md:grid-cols-3 gap-6">
+    <div className="flex flex-col text-center items-center">
+      <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 w-[95%]">
         {meals.map((item) => (
           <MealItem meal={item} />
         ))}
