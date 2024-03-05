@@ -34,6 +34,6 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
-  const meals = await prisma.meal.findMany();
+  const meals = await prisma.meal.findMany({include: {tags: true}});
   return NextResponse.json(meals);
 }

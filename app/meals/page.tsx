@@ -4,10 +4,10 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MealItem } from "../components/meals/MealItem";
-import { Meal } from "@prisma/client";
+import { MealWithTags } from "@/types/MealWIthTags";
 
 export default function Home() {
-  const [meals, setMeals] = useState<Meal[]>([]);
+  const [meals, setMeals] = useState<MealWithTags[]>([]);
 
   const fetchMeals = async () => {
     const res = await axios.get("/api/meals");

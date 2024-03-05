@@ -1,14 +1,26 @@
-import { Meal } from "@prisma/client";
+import { MealWithTags } from "@/types/MealWIthTags";
 import Image from "next/image";
+import Link from "next/link";
+
 
 type Props = {
-  meal: Meal;
+  meal: MealWithTags;
 };
+
+
 
 export const MealItem: React.FC<Props> = ({ meal }) => {
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-col items-center bg-orange-50 p-4 rounded-lg border-2 md:w-[85%] gap-3 hover:scale-105 hover:opacity-80 hover:cursor-pointer">
+      <Link
+        href={{
+          pathname: "meals/meal",
+          query: {
+            id: meal.id,
+          },
+        }}
+        className="flex flex-col items-center bg-orange-50 p-4 rounded-lg border-2 md:w-[85%] gap-3 hover:scale-105 hover:opacity-80 hover:cursor-pointer"
+      >
         <div className="text-2xl font-semibold text-ellipsis">{meal.title}</div>
         <Image
           width={400}
@@ -23,18 +35,11 @@ export const MealItem: React.FC<Props> = ({ meal }) => {
           {meal.description}
         </div>
         <div className="flex flex-wrap justify-center items-center gap-4 text-ellipsis  w-full">
-          <div className="bg-orange-800 px-2 h-8  py-1 rounded-lg text-white font-bold ">
-            Vegetarian
-          </div>
-          <div className="bg-orange-800 px-2 h-8  py-1 rounded-lg text-white font-bold ">
-            Vegan
-          </div>
-          <div className="bg-orange-800 px-2 h-8 py-1 rounded-lg text-white font-bold ">
-            Low sugar
-          </div>
-          
+          {meal.tags.map((item) => <div className="bg-orange-800 px-2 h-8  py-1 rounded-lg text-white font-bold ">
+            {item.name}
+          </div>)}
         </div>
-      </div>
+      </Link>
     </div>
   );
 };
