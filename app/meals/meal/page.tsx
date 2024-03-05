@@ -45,6 +45,13 @@ export default function MealPage() {
           "https://cdn.pixabay.com/photo/2023/06/12/11/34/mushrooms-8058299_960_720.jpg"
         }
       />
+      <div className="flex flex-row w-[70%] gap-3 justify-center mt-2">
+        {meal?.tags.map((item) => (
+          <div className="bg-orange-800 px-2 h-8  py-1 rounded-lg text-white font-bold shadow-lg">
+            {item.name}
+          </div>
+        ))}
+      </div>
 
       <section className=" w-[70%] my-8">
         <h2 className="text-center text-2xl w-full border-b-2 pb-2">Recipe:</h2>
