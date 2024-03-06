@@ -11,15 +11,13 @@ const postMeal = z.object({
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const validation = postMeal.safeParse(body);
+  const validation = postMeal.safeParse(body.data);
   if (!validation.success) {
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
 
   const tagIds = body.tags.map((item: string) => Number(item));
   const tags = await prisma.tag.findMany({ where: { id: { in: tagIds } } });
-
-  console.log(tags);
 
   const newMeal = await prisma.meal.create({
     data: {
@@ -75,4 +73,40 @@ export async function GET(request: NextRequest) {
 
   const meals = await prisma.meal.findMany({ include: { tags: true } });
   return NextResponse.json(meals);
+}
+
+export async function PUT(request: NextRequest) {
+  const body = await request.json();
+
+  console.log(body.params.id)
+
+  
+
+  const validation = postMeal.safeParse(body.data);
+
+
+  if (!validation.success) {
+    console.log(validation.error.errors)
+    return NextResponse.json(validation.error.errors, { status: 400 });
+  }
+
+  const tagIds = body.data.tags.map((item: string) => Number(item));
+  const tags = await prisma.tag.findMany({ where: { id: { in: tagIds } } });
+
+  console.log(tags)
+  console.log("bruh")
+
+  const updateMeal = await prisma.meal.update({
+    where: {
+      id: Number(body.params.id),
+    },
+    data: {
+      title: body.data.title,
+      description: body.data.description,
+      recipe: body.data.recipe,
+      tags: { set: tags },
+    },
+  });
+
+  return NextResponse.json(updateMeal, { status: 201 });
 }

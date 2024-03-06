@@ -70,7 +70,7 @@ export const TagFilter: React.FC<Props> = ({
                 onClick={() => {
                   changeSelection(item.id);
                 }}
-                className={` text-gray-700 block px-4 py-2 text-sm hover:bg-neutral-300`}
+                className={`hover:cursor-pointer text-gray-700 block px-4 py-2 text-sm hover:bg-neutral-300`}
               >
                 <div className="flex flex-row items-center justify-between">
                   {item.name}

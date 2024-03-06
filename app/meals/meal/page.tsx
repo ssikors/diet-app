@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/app/components/basic/Button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function MealPage() {
   const [meal, setMeal] = useState<MealWithTags>();
@@ -83,7 +84,17 @@ export default function MealPage() {
         </p>
       </section>
       <section className="flex flex-row gap-16">
-        <Button>Edit</Button>
+        <Link
+          href={{
+            pathname: "/meals/edit",
+            query: {
+              id: meal?.id,
+            },
+          }}
+        >
+          <Button>Edit</Button>
+        </Link>
+
         <button
           onClick={deleteMeal}
           className="my-3 bg-red-700 hover:bg-red-800 py-1 w-36 text-white font-semibold rounded-md border-2 border-red-800"
