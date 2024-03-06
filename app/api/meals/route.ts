@@ -6,13 +6,16 @@ const postMeal = z.object({
   title: z.string().min(1).max(255),
   description: z.string().min(1),
   recipe: z.string().min(16),
-  tags: z.array(z.string()),
+  tags: z.optional(z.array(z.string())),
 });
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const validation = postMeal.safeParse(body.data);
+  console.log(body)
+  const validation = postMeal.safeParse(body);
+  
   if (!validation.success) {
+    console.log(validation.error)
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
 

@@ -9,10 +9,10 @@ import { useEffect, useState } from "react";
 import { Tag } from "@prisma/client";
 
 const schema = z.object({
-  title: z.string(),
-  description: z.string().min(8),
+  title: z.string().min(1).max(255),
+  description: z.string().min(1),
   recipe: z.string().min(16),
-  tags: z.array(z.string()).nullable(),
+  tags: z.optional(z.array(z.string())),
 });
 
 type MealForm = z.infer<typeof schema>;
@@ -40,6 +40,7 @@ export default function NewMealPage() {
     formState: { errors, isSubmitting },
   } = useForm<MealForm>({
     resolver: zodResolver(schema),
+    defaultValues: {tags: []}
   });
 
   const onSubmit: SubmitHandler<MealForm> = async (data) => {
