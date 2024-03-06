@@ -51,9 +51,10 @@ export default function Home() {
             setSelectedTags={setSelectedTags}
           />
           <Button onClick={fetchMeals}>Search</Button>
-          <Button>
-            <Link href={"/meals/new"}>New meal</Link>
-          </Button>
+
+          <Link href={"/meals/new"}>
+            <Button>New meal</Button>
+          </Link>
         </span>
         <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 w-[95%] border-2 pt-8 pb-8">
           {meals.map((item) => (
