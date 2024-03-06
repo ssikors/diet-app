@@ -11,7 +11,7 @@ type Props = {
 
 export const MealItem: React.FC<Props> = ({ meal }) => {
   return (
-    <div className="flex flex-col items-center">
+    <div key={meal.id} className="flex flex-col items-center">
       <Link
         href={{
           pathname: "meals/meal",
@@ -35,7 +35,7 @@ export const MealItem: React.FC<Props> = ({ meal }) => {
           {meal.description}
         </div>
         <div className="flex flex-wrap justify-center items-center gap-4 text-ellipsis  w-full">
-          {meal.tags.map((item) => <div className="bg-orange-800 px-2 h-8  py-1 rounded-lg text-white font-bold ">
+          {meal.tags.map((item) => <div key={item.id} className="bg-orange-800 px-2 h-8  py-1 rounded-lg text-white font-bold ">
             {item.name}
           </div>)}
         </div>

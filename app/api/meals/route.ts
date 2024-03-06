@@ -36,14 +36,23 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const id = Number(searchParams.get("id"));
+  const tags = searchParams.get("tags");
 
   if (id) {
-
     const meal = await prisma.meal.findFirst({
       where: { id: id },
       include: { tags: true },
     });
     return NextResponse.json(meal);
+  }
+
+  if (tags) {
+    const tagIds: number[] = JSON.parse(tags);
+    const meals = await prisma.meal.findMany({
+      include: { tags: true },
+      where: { tags: { some: { id: { in: tagIds } } } },
+    });
+    return NextResponse.json(meals);
   }
 
   const meals = await prisma.meal.findMany({ include: { tags: true } });
