@@ -5,11 +5,29 @@ import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { Button } from "@/app/components/basic/Button";
+import { useRouter } from "next/navigation";
 
 export default function MealPage() {
   const [meal, setMeal] = useState<MealWithTags>();
 
   const searchParams = useSearchParams();
+
+  const router = useRouter();
+
+  const deleteMeal = async () => {
+    const res = await axios.delete("/api/meals/", {
+      params: {
+        id: searchParams.get("id"),
+      },
+    });
+
+    if (res.status != 200) {
+      console.log("Error");
+    } else {
+      router.push("/meals");
+    }
+  };
 
   const fetchMeal = async () => {
     const res = await axios.get("/api/meals/", {
@@ -37,15 +55,15 @@ export default function MealPage() {
       </div>
 
       <Image
-        width={400}
-        height={300}
+        width={480}
+        height={360}
         className="rounded-lg border-4 opacity-90 mt-6"
         alt=""
         src={
           "https://cdn.pixabay.com/photo/2023/06/12/11/34/mushrooms-8058299_960_720.jpg"
         }
       />
-      <div className="flex flex-row w-[70%] gap-3 justify-center mt-2">
+      <div className="flex flex-row w-[70%] gap-3 justify-center mt-4">
         {meal?.tags.map((item) => (
           <div className="bg-orange-800 px-2 h-8  py-1 rounded-lg text-white font-bold shadow-lg">
             {item.name}
@@ -53,11 +71,20 @@ export default function MealPage() {
         ))}
       </div>
 
-      <section className=" w-[70%] my-8">
+      <section className="w-[80%] md:w-[50%] lg:w-[40%] mt-32 mb-4">
         <h2 className="text-center text-2xl w-full border-b-2 pb-2">Recipe:</h2>
         <p className="my-1 leading-relaxed pb-2 border-b-2 text-justify text text-zinc-800 font w-full">
           {meal?.recipe}
         </p>
+      </section>
+      <section className="flex flex-row gap-16">
+        <Button>Edit</Button>
+        <button
+          onClick={deleteMeal}
+          className="my-3 bg-red-700 hover:bg-red-800 py-1 w-36 text-white font-semibold rounded-md border-2 border-red-800"
+        >
+          Delete
+        </button>
       </section>
     </div>
   );

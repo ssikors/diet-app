@@ -55,7 +55,7 @@ export default function Home() {
             <Link href={"/meals/new"}>New meal</Link>
           </Button>
         </span>
-        <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 w-[95%] border-2 pt-8">
+        <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 w-[95%] border-2 pt-8 pb-8">
           {meals.map((item) => (
             <MealItem key={item.id} meal={item} />
           ))}

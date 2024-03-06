@@ -33,6 +33,24 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(newMeal, { status: 201 });
 }
 
+export async function DELETE(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const id = Number(searchParams.get("id"));
+  if (!id) {
+    return NextResponse.json({ message: "No ID specified" }, { status: 400 });
+  }
+
+  const deleteMeal = await prisma.meal.delete({
+    where: {
+      id: id,
+    },
+  });
+
+  console.log(deleteMeal);
+
+  return NextResponse.json({ message: "Record deleted." }, { status: 200 });
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const id = Number(searchParams.get("id"));
