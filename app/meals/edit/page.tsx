@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MealWithTags } from "@/types/MealWIthTags";
 import { Tag } from "@prisma/client";
+import { Button } from "@/app/components/basic/Button";
 
 const schema = z.object({
   title: z.string().min(1).max(255),
@@ -57,14 +58,14 @@ export default function EditMealPage() {
       title: meal?.title,
       description: meal?.description,
       recipe: meal?.recipe!,
-      tags: []
+      tags: [],
     },
   });
 
   const onSubmit: SubmitHandler<MealForm> = async (data) => {
-    console.log(searchParams.get("id"));
     try {
-      await axios.put("/api/meals/", { data,
+      await axios.put("/api/meals/", {
+        data,
         params: { id: searchParams.get("id") },
       });
       router.push(`/meals/meal?id=${meal?.id}`);
@@ -74,13 +75,14 @@ export default function EditMealPage() {
   };
 
   return (
-    <div className="">
+    <div className="flex flex-col items-center">
       <form
-        className="flex flex-col gap-2 items-center"
+        className="flex flex-col gap-2 items-left w-[80%] lg:w-[50%]"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <label className="font-semibold text-lg">Meal:</label>
         <input
-          className="border-2"
+          className="border-2 w-96"
           defaultValue={meal?.title}
           type="text"
           {...register("title")}
@@ -88,16 +90,18 @@ export default function EditMealPage() {
         {errors.title && (
           <div className="text-red-500">{errors.title.message}</div>
         )}
+        <label className="font-semibold text-lg">Description:</label>
         <textarea
-          className="border-2"
+          className="border-2 w-full h-48"
           defaultValue={meal?.description}
           {...register("description")}
         ></textarea>
         {errors.description && (
           <div className="text-red-500">{errors.description.message}</div>
         )}
+        <label className="font-semibold text-lg">Recipe:</label>
         <textarea
-          className="border-2"
+          className="border-2 h-80"
           defaultValue={meal?.recipe!}
           {...register("recipe")}
         ></textarea>
@@ -125,12 +129,18 @@ export default function EditMealPage() {
           <div className="text-red-500">{errors.tags.message}</div>
         )}
 
-        <button disabled={isSubmitting} type="submit">
-          {isSubmitting ? "Loading..." : "Submit"}
-        </button>
-        {errors.root && (
-          <div className="text-red-500">{errors.root.message}</div>
-        )}
+        <div className="w-full flex flex-col items-center">
+          <button
+            className="my-3 bg-green-700 hover:bg-green-800 py-1 w-36 text-white font-semibold rounded-md border-2 border-green-800"
+            disabled={isSubmitting}
+            type="submit"
+          >
+            {isSubmitting ? "Loading..." : "Save"}
+          </button>
+          {errors.root && (
+            <div className="text-red-500">{errors.root.message}</div>
+          )}
+        </div>
       </form>
     </div>
   );
