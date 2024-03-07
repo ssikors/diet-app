@@ -53,7 +53,7 @@ export default function EditMealPage() {
         title: meal?.title,
         description: meal?.description,
         recipe: meal?.recipe!,
-        tags: []
+        tags: [],
       });
     }
   }, [meal]);
@@ -89,12 +89,12 @@ export default function EditMealPage() {
   return (
     <div className="flex flex-col items-center">
       <form
-        className="flex flex-col gap-2 items-left w-[80%] lg:w-[50%]"
+        className="flex flex-col bg-neutral-100 border-2 p-4 px-8 rounded-md gap-2 items-left w-[80%] lg:w-[50%]"
         onSubmit={handleSubmit(onSubmit)}
       >
         <label className="font-semibold text-lg">Meal:</label>
         <input
-          className="border-2 sm:w-96"
+          className="border-2 border-black rounded-md p-1 sm:w-96"
           defaultValue={meal?.title}
           type="text"
           {...register("title")}
@@ -104,7 +104,7 @@ export default function EditMealPage() {
         )}
         <label className="font-semibold text-lg">Description:</label>
         <textarea
-          className="border-2 w-full h-48"
+          className="border-2 border-black rounded-md p-1 w-full h-48"
           defaultValue={meal?.description}
           {...register("description")}
         ></textarea>
@@ -113,7 +113,7 @@ export default function EditMealPage() {
         )}
         <label className="font-semibold text-lg">Recipe:</label>
         <textarea
-          className="border-2 h-80"
+          className="border-2  h-80 w-full"
           defaultValue={meal?.recipe!}
           {...register("recipe")}
         ></textarea>
@@ -131,7 +131,7 @@ export default function EditMealPage() {
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   {...register("tags")}
                 />
-                <label className="ml-3 min-w-0 flex-1 text-gray-500">
+                <label className="ml-3 min-w-0 flex-1 text-black">
                   {item.name}
                 </label>
               </div>
