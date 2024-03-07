@@ -47,10 +47,22 @@ export default function EditMealPage() {
     fetchTags();
   }, []);
 
+  useEffect(() => {
+    if (meal) {
+      reset({
+        title: meal?.title,
+        description: meal?.description,
+        recipe: meal?.recipe!,
+        tags: []
+      });
+    }
+  }, [meal]);
+
   const {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<MealForm>({
     resolver: zodResolver(schema),
@@ -82,7 +94,7 @@ export default function EditMealPage() {
       >
         <label className="font-semibold text-lg">Meal:</label>
         <input
-          className="border-2 w-96"
+          className="border-2 sm:w-96"
           defaultValue={meal?.title}
           type="text"
           {...register("title")}
@@ -108,6 +120,7 @@ export default function EditMealPage() {
         {errors.recipe && (
           <div className="text-red-500">{errors.recipe.message}</div>
         )}
+        <label className="font-semibold text-lg">Tags:</label>
         <div className="text-left">
           {tags.map((item) => (
             <div key={item.name} className="space-y-6">
