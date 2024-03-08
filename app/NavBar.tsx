@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { FaBowlFood } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
+import SignIn from "./components/SignIn";
 
 const NavBar = () => {
   const path = usePathname()
@@ -18,6 +19,7 @@ const NavBar = () => {
       <ul className="flex space-x-6">
         {links.map((link) => <Link key={link.label} className={`${link.href == path ? "text-slate-800" : "text-slate-600" } hover:text-slate-900`} href={link.href}>{link.label}</Link>)}
       </ul>
+      <SignIn />
     </nav>
   )
 }
