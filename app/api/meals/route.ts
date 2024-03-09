@@ -86,13 +86,13 @@ export async function GET(request: NextRequest) {
   if (tags) {
     const tagIds: number[] = JSON.parse(tags);
     const meals = await prisma.meal.findMany({
-      include: { tags: true },
+      include: { tags: true, author: false },
       where: { tags: { some: { id: { in: tagIds } } } },
     });
     return NextResponse.json(meals);
   }
 
-  const meals = await prisma.meal.findMany({ include: { tags: true } });
+  const meals = await prisma.meal.findMany({ include: { tags: true, author: false } });
   return NextResponse.json(meals);
 }
 
