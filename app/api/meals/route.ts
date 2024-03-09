@@ -59,15 +59,32 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ message: "No ID specified" }, { status: 400 });
   }
 
-  const deleteMeal = await prisma.meal.delete({
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ status: 401 });
+  }
+
+  const meal = await prisma.meal.findFirst({
     where: {
       id: id,
     },
+    include: { author: true },
   });
 
-  console.log(deleteMeal);
+  if (meal?.author?.email == session.user?.email) {
+    const deleteMeal = await prisma.meal.delete({
+      where: {
+        id: id,
+      },
+    });
 
-  return NextResponse.json({ message: "Record deleted." }, { status: 200 });
+    console.log(deleteMeal);
+
+    return NextResponse.json({ message: "Record deleted." }, { status: 200 });
+  } else {
+    return NextResponse.json({ status: 401 });
+  }
 }
 
 export async function GET(request: NextRequest) {
@@ -92,14 +109,22 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(meals);
   }
 
-  const meals = await prisma.meal.findMany({ include: { tags: true, author: false } });
+  const meals = await prisma.meal.findMany({
+    include: { tags: true, author: false },
+  });
   return NextResponse.json(meals);
 }
 
 export async function PUT(request: NextRequest) {
   const body = await request.json();
 
-  console.log(body.params.id);
+  const session = await getServerSession(authOptions);
+
+  console.log(session)
+
+  if (!session) {
+    return NextResponse.json({ status: 401 });
+  }
 
   const validation = postMeal.safeParse(body.data);
 
@@ -111,17 +136,28 @@ export async function PUT(request: NextRequest) {
   const tagIds = body.data.tags.map((item: string) => Number(item));
   const tags = await prisma.tag.findMany({ where: { id: { in: tagIds } } });
 
-  const updateMeal = await prisma.meal.update({
+  const meal = await prisma.meal.findFirst({
     where: {
       id: Number(body.params.id),
     },
-    data: {
-      title: body.data.title,
-      description: body.data.description,
-      recipe: body.data.recipe,
-      tags: { set: tags },
-    },
+    include: { author: true },
   });
 
-  return NextResponse.json(updateMeal, { status: 201 });
+  if (meal?.author?.email == session.user?.email) {
+    const updateMeal = await prisma.meal.update({
+      where: {
+        id: Number(body.params.id),
+      },
+      data: {
+        title: body.data.title,
+        description: body.data.description,
+        recipe: body.data.recipe,
+        tags: { set: tags },
+      },
+    });
+
+    return NextResponse.json(updateMeal, { status: 201 });
+  } else {
+    return NextResponse.json({ status: 401 });
+  }
 }
