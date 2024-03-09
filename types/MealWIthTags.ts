@@ -1,4 +1,5 @@
 import { Tag } from "@prisma/client";
+import { AuthorPublic } from "./AuthorPublic";
 
 export type MealWithTags = {
   id: number;
@@ -7,4 +8,5 @@ export type MealWithTags = {
   recipe: string | null;
   tags: Tag[]
   updatedAt: Date;
+  author?: AuthorPublic
 }

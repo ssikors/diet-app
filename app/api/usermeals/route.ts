@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return NextResponse.json({ status: 401 });
+    return NextResponse.json({message: "error"},{ status: 401 });
   }
 
   if (tags) {

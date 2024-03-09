@@ -8,12 +8,13 @@ import Image from "next/image";
 import { Button } from "@/app/components/basic/Button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function MealPage() {
   const [meal, setMeal] = useState<MealWithTags>();
 
   const searchParams = useSearchParams();
-
+  const { data: session } = useSession();
   const router = useRouter();
 
   const deleteMeal = async () => {
@@ -66,7 +67,7 @@ export default function MealPage() {
       />
       <div className="flex flex-row w-[70%] gap-3 justify-center mt-4">
         {meal?.tags.map((item) => (
-          <div className="bg-orange-800 px-2 h-8  py-1 rounded-lg text-white font-bold shadow-lg">
+          <div key={item.name} className="bg-orange-800 px-2 h-8  py-1 rounded-lg text-white font-bold shadow-lg">
             {item.name}
           </div>
         ))}
@@ -83,7 +84,7 @@ export default function MealPage() {
           ))}
         </p>
       </section>
-      <section className="flex flex-row gap-16">
+      {meal?.author && session?.user && meal.author.email == session?.user?.email ? <section className="flex flex-row gap-16">
         <Link
           href={{
             pathname: "/meals/edit",
@@ -101,7 +102,8 @@ export default function MealPage() {
         >
           Delete
         </button>
-      </section>
+      </section> : ""}
+      
     </div>
   );
 }

@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
   if (id) {
     const meal = await prisma.meal.findFirst({
       where: { id: id },
-      include: { tags: true },
+      include: { tags: true, author: { select: { name: true, email: true } } },
     });
     return NextResponse.json(meal);
   }
@@ -120,7 +120,7 @@ export async function PUT(request: NextRequest) {
 
   const session = await getServerSession(authOptions);
 
-  console.log(session)
+  console.log(session);
 
   if (!session) {
     return NextResponse.json({ status: 401 });
