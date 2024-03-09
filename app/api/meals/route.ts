@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 const postMeal = z.object({
   title: z.string().min(1).max(255),
@@ -11,16 +13,31 @@ const postMeal = z.object({
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  console.log(body)
+  console.log(body);
+
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ status: 401 });
+  }
+
   const validation = postMeal.safeParse(body);
-  
+
   if (!validation.success) {
-    console.log(validation.error)
+    console.log(validation.error);
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
 
   const tagIds = body.tags.map((item: string) => Number(item));
   const tags = await prisma.tag.findMany({ where: { id: { in: tagIds } } });
+
+  const author = await prisma.user.findFirst({
+    where: { email: session.user?.email },
+  });
+
+  if (!author) {
+    return NextResponse.json({ status: 401 });
+  }
 
   const newMeal = await prisma.meal.create({
     data: {
@@ -28,6 +45,7 @@ export async function POST(request: NextRequest) {
       description: body.description,
       recipe: body.recipe,
       tags: { connect: tags },
+      authorId: author.id,
     },
   });
 
@@ -81,23 +99,17 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   const body = await request.json();
 
-  console.log(body.params.id)
-
-  
+  console.log(body.params.id);
 
   const validation = postMeal.safeParse(body.data);
 
-
   if (!validation.success) {
-    console.log(validation.error.errors)
+    console.log(validation.error.errors);
     return NextResponse.json(validation.error.errors, { status: 400 });
   }
 
   const tagIds = body.data.tags.map((item: string) => Number(item));
   const tags = await prisma.tag.findMany({ where: { id: { in: tagIds } } });
-
-  console.log(tags)
-  console.log("bruh")
 
   const updateMeal = await prisma.meal.update({
     where: {
