@@ -9,6 +9,7 @@ const postMeal = z.object({
   description: z.string().min(1),
   recipe: z.string().min(16),
   tags: z.optional(z.array(z.string())),
+  imageLink: z.optional(z.string()),
 });
 
 export async function POST(request: NextRequest) {
@@ -46,6 +47,7 @@ export async function POST(request: NextRequest) {
       recipe: body.recipe,
       tags: { connect: tags },
       authorId: author.id,
+      imageLink: body.imageLink,
     },
   });
 
@@ -153,6 +155,7 @@ export async function PUT(request: NextRequest) {
         description: body.data.description,
         recipe: body.data.recipe,
         tags: { set: tags },
+        imageLink: body.imageLink,
       },
     });
 

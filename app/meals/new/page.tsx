@@ -13,6 +13,7 @@ const schema = z.object({
   description: z.string().min(1),
   recipe: z.string().min(16),
   tags: z.optional(z.array(z.string())),
+  imageLink: z.optional(z.string())
 });
 
 type MealForm = z.infer<typeof schema>;
@@ -87,6 +88,13 @@ export default function NewMealPage() {
         {errors.recipe && (
           <div className="text-red-500">{errors.recipe.message}</div>
         )}
+        <label className="font-semibold text-lg">Image:</label>
+        <input
+          className="border-2 border-black rounded-md p-1"
+          placeholder="Image link"
+          type="text"
+          {...register("imageLink")}
+        ></input>
         <label className="font-semibold text-lg">Tags:</label>
         <div className="text-left">
           {tags.map((item) => (

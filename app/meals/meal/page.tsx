@@ -62,7 +62,7 @@ export default function MealPage() {
         className="rounded-lg border-4 opacity-90 mt-6"
         alt=""
         src={
-          "https://cdn.pixabay.com/photo/2023/06/12/11/34/mushrooms-8058299_960_720.jpg"
+          meal?.imageLink ? meal.imageLink : "https://cdn.pixabay.com/photo/2018/06/12/15/08/question-mark-3470783_960_720.jpg"
         }
       />
       <div className="flex flex-row w-[70%] gap-3 justify-center mt-4">

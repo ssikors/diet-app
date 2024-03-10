@@ -8,13 +8,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MealWithTags } from "@/types/MealWIthTags";
 import { Tag } from "@prisma/client";
-import { Button } from "@/app/components/basic/Button";
 
 const schema = z.object({
   title: z.string().min(1).max(255),
   description: z.string().min(1),
   recipe: z.string().min(16),
   tags: z.optional(z.array(z.string())),
+  imageLink: z.optional(z.string())
 });
 
 type MealForm = z.infer<typeof schema>;
@@ -54,6 +54,7 @@ export default function EditMealPage() {
         description: meal?.description,
         recipe: meal?.recipe!,
         tags: [],
+        imageLink: meal?.imageLink
       });
     }
   }, [meal]);
@@ -113,13 +114,20 @@ export default function EditMealPage() {
         )}
         <label className="font-semibold text-lg">Recipe:</label>
         <textarea
-          className="border-2  h-80 w-full"
+          className="border-2 border-black rounded-md p-1  h-80 w-full"
           defaultValue={meal?.recipe!}
           {...register("recipe")}
         ></textarea>
         {errors.recipe && (
           <div className="text-red-500">{errors.recipe.message}</div>
         )}
+        <label className="font-semibold text-lg">Image:</label>
+        <input
+          className="border-2 border-black rounded-md p-1"
+          placeholder="Image link"
+          type="text"
+          {...register("imageLink")}
+        ></input>
         <label className="font-semibold text-lg">Tags:</label>
         <div className="text-left">
           {tags.map((item) => (

@@ -27,6 +27,7 @@ model Meal {
   tags        Tag[]
   updatedAt   DateTime @updatedAt
   authorId    String?
+  imageLink   String?
   author      User?     @relation(fields: [authorId], references: [id])
 }
 
