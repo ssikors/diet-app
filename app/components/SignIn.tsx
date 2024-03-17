@@ -19,7 +19,7 @@ const SignIn = () => {
 
   return (
     <button
-      className="text-white bg-green-500 font-semibold py-1 scale-90 hover:scale-100 hover:bg-green-600 px-3 rounded-lg"
+      className="text-white bg-green-700 font-semibold py-1 scale-90 hover:scale-100 hover:bg-green-600 px-3 rounded-lg"
       onClick={() => signIn()}
     >
       Log in

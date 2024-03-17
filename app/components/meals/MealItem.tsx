@@ -31,7 +31,7 @@ export const MealItem: React.FC<Props> = ({ meal }) => {
             meal.imageLink ? meal.imageLink : "https://cdn.pixabay.com/photo/2018/06/12/15/08/question-mark-3470783_960_720.jpg"
           }
         />
-        <div className="w-3/4 max-h-24 overflow-clip text-lg text-zinc-700 border-b">
+        <div className="w-3/4 max-h-24 overflow-clip  text-zinc-700 border-b">
           {meal.description}
         </div>
         <div className="flex flex-wrap justify-center items-center gap-4 text-ellipsis  w-full">

@@ -73,7 +73,7 @@ export default function MealPage() {
         ))}
       </div>
 
-      <section className="w-[80%] md:w-[50%] lg:w-[40%] mt-32 mb-4">
+      <section className="w-[80%] md:w-[50%] lg:w-[40%] mt-24 mb-4">
         <h2 className="text-center text-2xl w-full border-b-2 pb-2">Recipe:</h2>
         <p className="my-1 leading-relaxed pb-2 border-b-2 text-justify text text-zinc-800 font w-full">
           {meal?.recipe?.split("\n").map((str) => (

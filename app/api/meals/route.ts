@@ -122,7 +122,6 @@ export async function PUT(request: NextRequest) {
 
   const session = await getServerSession(authOptions);
 
-  console.log(session);
 
   if (!session) {
     return NextResponse.json({ status: 401 });
@@ -155,7 +154,7 @@ export async function PUT(request: NextRequest) {
         description: body.data.description,
         recipe: body.data.recipe,
         tags: { set: tags },
-        imageLink: body.imageLink,
+        imageLink: body.data.imageLink,
       },
     });
 

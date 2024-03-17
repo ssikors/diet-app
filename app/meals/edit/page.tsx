@@ -72,6 +72,7 @@ export default function EditMealPage() {
       description: meal?.description,
       recipe: meal?.recipe!,
       tags: [],
+      imageLink: meal?.imageLink 
     },
   });
 
