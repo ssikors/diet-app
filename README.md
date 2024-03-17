@@ -9,13 +9,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Screenshots:
 
 **Filtering meals by tags:**
-![alt text](image-2.png)
+![alt text](readme/image-2.png)
 
 **Meal page:**
-![alt text](image-1.png)
+![alt text](readme/image-1.png)
 
 **Editing a meal:**
-![alt text](image.png)
+![alt text](readme/image.png)
 
 ## How to run the app
 
